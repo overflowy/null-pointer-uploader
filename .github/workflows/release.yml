@@ -1,27 +1,39 @@
-on: [workflow_dispatch]
+on:
+  release:
+    types: [created]
 
 jobs:
   releases-matrix:
     name: Release Go Binary
     runs-on: ubuntu-latest
+    permissions: write-all
     strategy:
       matrix:
-        goos: [linux, windows, darwin]
-        goarch: ["386", amd64, arm64]
+        # goos: [linux, windows, darwin]
+        # goarch: ["386", amd64, arm64]
+        # exclude:
+        #   - goarch: "386"
+        #     goos: darwin
+        #   - goarch: arm64
+        #     goos: windows
+
+        goos: [windows, darwin]
+        goarch: [amd64, arm64]
         exclude:
-          - goarch: "386"
-            goos: darwin
           - goarch: arm64
             goos: windows
     steps:
-      - name: Install libx11-dev
-        run: sudo apt-get install -y libx11-dev
+      # - name: Install libx11-dev
+      #   run: |
+      #     sudo apt update -y
+      #     sudo apt remove -y libx11-dev
+      #     sudo apt install -y libx11-dev
 
       - name: Checkout code
         uses: actions/checkout@v3
 
       - name: Build and release
-        uses: wangyoucao577/go-release-action@v1
+        uses: wangyoucao577/go-release-action@v1.37
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           goos: ${{ matrix.goos }}
@@ -29,4 +41,7 @@ jobs:
           goversion: "https://dl.google.com/go/go1.20.2.linux-amd64.tar.gz"
           project_path: "./src/npu"
           binary_name: "npu"
+          pre_command: export GODEBUG=http2client=0
+          retry: 10
+          overwrite: true
           extra_files: LICENSE README.md
