@@ -1,4 +1,4 @@
-module null-pointer-uploader
+module npu
 
 go 1.20
 
