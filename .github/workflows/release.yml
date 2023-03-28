@@ -14,16 +14,19 @@ jobs:
           - goarch: arm64
             goos: windows
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
+      - name: Install libx11-dev
+        run: sudo apt-get install -y libx11-dev
 
-    - name: Build and release
-      uses: wangyoucao577/go-release-action@v1
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        goos: ${{ matrix.goos }}
-        goarch: ${{ matrix.goarch }}
-        goversion: "https://dl.google.com/go/go1.20.2.linux-amd64.tar.gz"
-        project_path: "./src/npu"
-        binary_name: "npu"
-        extra_files: LICENSE README.md
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Build and release
+        uses: wangyoucao577/go-release-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          goversion: "https://dl.google.com/go/go1.20.2.linux-amd64.tar.gz"
+          project_path: "./src/npu"
+          binary_name: "npu"
+          extra_files: LICENSE README.md
