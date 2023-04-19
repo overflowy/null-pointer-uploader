@@ -10,6 +10,13 @@ When executed, the program reads the specified file and creates a multipart/form
 
 Upon a successful upload, the program outputs the URL to the uploaded file to the console and also **writes it to the clipboard**.
 
+## To do
+
+- [ ] Add support for multiple files
+- [ ] Add support for directories
+- [ ] Add support for archiving files (with encryption)
+- [ ] Add configuration file
+
 ## License
 
 The code in this repository is licensed under the MIT License. See LICENSE for more information.
